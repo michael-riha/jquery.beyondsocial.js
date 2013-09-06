@@ -4,7 +4,7 @@
 	$.beyondsocial = function(element, options) {
 
 		var defaults = {
-			networks: [{name: 'tumblr', id: 'beyond-t-s'}, {name: 'tumblr', id: 'skindy'}, {name: 'facebook', id: '323476337711540'}],
+			networks: [{name: 'tumblr', id: 'beyond-t-s'}, {name: 'facebook', id: '323476337711540'}],
 		    	maxResults: 4,
 			template: "mustache/rss.mustache",
 			bulkload: true
