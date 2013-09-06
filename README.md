@@ -35,11 +35,12 @@ Default Settings:
 Possible Values:
 ```js
 {
-  networks: [{name: 'tumblr' | 'facebook' | 'pinterest' | 'instagram' 
-                id: valid id according to the social network you choose
+  networks: [{name:     'tumblr' | 'facebook' | 'pinterest' | 'instagram' 
+              id:       valid id according to the social network you choose
+              template: valid path to your template file
             }, ...],
-  maxResults: greater than 0, whole numbers
-  template: valid path to your template file
+  maxResults: greater than 0, whole numbers //define how many results should be displayed
+  template: valid path to your defaulttemplate file //will be used if no template inside networks is defined
   bulkload: true | false
 }
 ```
