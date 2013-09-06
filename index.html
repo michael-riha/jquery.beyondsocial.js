@@ -20,6 +20,7 @@
 	article {
 		display: inline-block;
 		width: 200px;
+		vertical-align:top;
 	}
 	article a div img {
 		width: 100px;
@@ -33,7 +34,8 @@
             var images = ["background1.jpg", "background2.jpg", "background3.jpg", "background4.jpg"];
             var src = imagepath + images[parseInt(Math.random()*images.length)];
            	$('#bg').attr("src", src);
-            
+            //enable "show results" button
+		$('#subbutton').removeAttr("disabled");
             // replace version number with the latest version
 			var latest_version = 'v0.3';
 
@@ -157,7 +159,7 @@
             <h5>Live Demo</h5>
             <p>Insert a valid feed + feed-id (current supported feeds = facebook & tumblr).</p>
 	    <p>This plugin uses <a href="https://github.com/janl/mustache.js">Mustache.js</a></p>
-            <div id="feedSelection">
+	    <div id="feedSelection">
 
 		<div>
 			ID: <div><input id="exampleid" type="text" value="beyond-t-s" /></div>
@@ -168,12 +170,16 @@
 			<select id="examplefeed" name="feed">
 				<option value="tumblr">tumblr</option>
 				<option value="facebook">facebook</option>
+				<option value="pinterest">pinterest</option>
+				<option value="instagram">instagram</option>
 			</select></div>
 		</div>
 		<div>
+			<button type="button" id="addto">Add feed to Results</button>
 			<button type="button" id="subbutton">Show Results</button>
 		</div>
-            </div>
+		<div id="arraydisplay"></div>
+	    </div>
         </div>
         
         <div class="span7">
@@ -194,7 +200,7 @@
     </div>
     <div class="row-fluid">
         <div class="span12">
-	    <div id="feedDisplay">d
+	    <div id="feedDisplay">
 	    </div>
 	</div>
     </div>
@@ -204,10 +210,9 @@
         	<h5>HTML</h5>
 			<p>
 <pre>&lt;div id=&quot;feedSelection&quot;&gt;
+
 	&lt;div&gt;
-		ID: &lt;div&gt;
-		&lt;input id=&quot;exampleid&quot; type=&quot;text&quot; value=&quot;beyond-t-s&quot; /&gt;
-		&lt;/div&gt;
+		ID: &lt;div&gt;&lt;input id=&quot;exampleid&quot; type=&quot;text&quot; value=&quot;beyond-t-s&quot; /&gt;&lt;/div&gt;
 	&lt;/div&gt;
 
 	&lt;div&gt;
@@ -215,13 +220,15 @@
 		&lt;select id=&quot;examplefeed&quot; name=&quot;feed&quot;&gt;
 			&lt;option value=&quot;tumblr&quot;&gt;tumblr&lt;/option&gt;
 			&lt;option value=&quot;facebook&quot;&gt;facebook&lt;/option&gt;
+			&lt;option value=&quot;pinterest&quot;&gt;pinterest&lt;/option&gt;
+			&lt;option value=&quot;instagram&quot;&gt;instagram&lt;/option&gt;
 		&lt;/select&gt;&lt;/div&gt;
 	&lt;/div&gt;
 	&lt;div&gt;
+		&lt;button type=&quot;button&quot; id=&quot;addto&quot;&gt;Add feed to Results&lt;/button&gt;
 		&lt;button type=&quot;button&quot; id=&quot;subbutton&quot;&gt;Show Results&lt;/button&gt;
 	&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;feedDisplay&quot;&gt;
+	&lt;div id=&quot;arraydisplay&quot;&gt;&lt;/div&gt;
 &lt;/div&gt;</pre>
 			</p>
         </div>
@@ -232,6 +239,7 @@
 			<p>
 <pre>article {
 	display: inline-block;
+	vertical-align:top;
 	width: 200px;
 }
 article a div img {
@@ -243,12 +251,10 @@ article a div img {
 	<div class="span6">
 		<h5>Mustache</h5>
 		<p>
-<pre>&lt;h2&gt;The Posts&lt;/h2&gt;
+<pre>&lt;h2&gt;The Result&lt;/h2&gt;
 {{#.}}
-&lt;article&gt;
-	&lt;a href=&quot;{{{link}}}&quot; target=&quot;_blank&quot;&gt;&lt;div id=&quot;imgwrapper&quot;&gt;&lt;img src=&quot;{{{image}}}&quot; /&gt;
-		&lt;div class=&quot;img-bg {{{social}}}&quot;&gt;&lt;/div&gt;
-	&lt;/div&gt;&lt;/a&gt;
+&lt;article class=&quot;{{{social}}}&quot;&gt;
+	&lt;a href=&quot;{{{link}}}&quot; target=&quot;_blank&quot;&gt;&lt;div id=&quot;imgwrapper&quot;&gt;&lt;img src=&quot;{{{image}}}&quot; /&gt;&lt;/div&gt;&lt;/a&gt;
 	&lt;h3&gt;&lt;a href=&quot;{{{link}}}&quot; target=&quot;_blank&quot;&gt;{{title}}&lt;/a&gt;&lt;/h3&gt;
 	&lt;p&gt;{{{content}}}&lt;/p&gt;
 &lt;/article&gt;
@@ -263,38 +269,37 @@ article a div img {
     <script>
 	/* beyondsocial example */
 	window.feedarray = new Array();
+	window.switcher = 0;
 	$('#subbutton').click(function(e) {
-		console.log($('#feedDisplay'));
-		$('#feedDisplay').empty();
+		//console.log($('#feedDisplay'));
+		//$('#feedDisplay').empty();
+
+		/*normal function call
 		var exid = $('#exampleid').val();
 		var exfeed = $('#examplefeed').val();
+		//console.log(exid+" "+exfeed);
 		$('#feedDisplay').beyondsocial({
 			networks: [{name: exfeed, id: exid}], 
 			maxResults: 4
-		});
-		/*for bulk operation example
-		if(feedarray.length) {
+		});*/
+		if(window.switcher == 1) {
+			//console.log(feedarray);
 			$('#feedDisplay').beyondsocial({
-				networks: feedarray, 
+				networks: feedarray,
 				maxResults: 4
 			});
+			$('#subbutton').attr("disabled","disabled");
+			$('#arraydisplay').text("Reload the page to try other feeds");
 		}
-		else {
-			feedarray.push({name: exfeed, id: exid});
-			$('#arraydisplay').append(exfeed+": "+exid+"; ");
-			$('#feedDisplay').beyondsocial({
-				networks: feedarray, 
-				maxResults: 4
-			});
-		}*/
 	});
-	/*for bulk operation example
+	//for bulk operation example
 	$('#addto').click(function(e) {
 		var exid = $('#exampleid').val();
 		var exfeed = $('#examplefeed').val();
 		feedarray.push({name: exfeed, id: exid});
 		$('#arraydisplay').append(exfeed+": "+exid+"; ");
-	});*/
+		window.switcher = 1;
+	});
     </script>
 
     <hr style="margin-bottom: 30px;">
