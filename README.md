@@ -8,7 +8,7 @@ jquery plugin for social network feeds
 
 Usage
 -----
-1) link jquery.beyondsocial.js and mustache.js in your html document
+1) link jquery.beyondsocial.js and mustache.js in your html document \
 2) call the function through an empty div element with an id of your choice
 
 Minimal Example
