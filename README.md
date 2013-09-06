@@ -13,6 +13,7 @@ Usage
 
 Minimal Example
 ----------------
+Displays the latest four entries of our tumblr blog.
 ```html
 <div id="display"></div>
 ```
