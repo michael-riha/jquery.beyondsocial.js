@@ -193,6 +193,7 @@ $('#subbutton').click(function(e) {
     if(window.switcher == 1) {
 	$('#feedDisplay').beyondsocial({
 	    networks: feedarray,
+	    maxResults: 6
 	});
 	$('#subbutton').attr(&quot;disabled&quot;,&quot;disabled&quot;);
 	$('#arraydisplay').text(&quot;Reload the page to try other feeds&quot;);
